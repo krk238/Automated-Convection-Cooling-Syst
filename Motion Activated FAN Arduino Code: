@@ -1,0 +1,39 @@
+// Kamil Khan
+// Motion Activated Fan
+// Final Project
+// Utilization of HC-SR04 and TT Motor
+  
+const int trigPin = 9;            // Trigger pin of HCSR04 to pin 9 
+const int echoPin = 10;           // Echo pin of HCSR04 to pin 10
+int motorpin = 3;                 // Define pin used to output to motor
+
+float duration, distance;         // define distance and duration as floats
+
+void setup() { 
+ pinMode(trigPin, OUTPUT); 
+ pinMode(echoPin, INPUT);
+ pinMode(motorpin, OUTPUT);       // motor will be emitted a signal to
+ Serial.begin(9600); 
+} 
+
+void loop() { 
+ digitalWrite(trigPin, LOW); 
+ delayMicroseconds(20); 
+ digitalWrite(trigPin, HIGH);       // Emits ultrasound to be received
+ delayMicroseconds(10); 
+ digitalWrite(trigPin, LOW); 
+ duration = pulseIn(echoPin, HIGH); // Allows for receiving of ultrasound
+ distance = (duration*.0343)/2;     // Allows for conversion to a distance number
+ Serial.print("Distance in cm: "); 
+ Serial.println(distance); 
+ if (distance < 110){          // 110 represents the "1.1 m range"
+  analogWrite(motorpin, 255);  // Fan is on at full speed
+  Serial.println("Fan is On");
+ }
+ else {
+  analogWrite(motorpin, 0);   // Fan turns off by speed going to 0
+    Serial.println("Fan is OFF");
+
+ }
+ delay(200);
+}
